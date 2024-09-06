@@ -9,7 +9,12 @@ export class UsersRepository {
     @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
 
-  async findByEmail(email: string) {
-    return this.userRepository.findBy({ email });
+  async findByEmail(email: string): Promise<User> {
+    try {
+      const user = await this.userRepository.findBy({ email });
+      return user.shift();
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
